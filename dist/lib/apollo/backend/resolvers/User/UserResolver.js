@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserResolvers = void 0;
 var index_1 = require("./query/index");
 var index_2 = require("./mutation/index");
+var apollo_server_express_1 = require("apollo-server-express");
 var UserResolvers = {
+    Upload: apollo_server_express_1.GraphQLUpload,
     Query: {
         getUser: index_1.getUser,
         isLoggedIn: index_1.isLoggedIn,

@@ -3,21 +3,25 @@ import { tokenPrefix } from "../../../../../../function/backend/setToken";
 import { passwordCheck } from "../../../../../../function/backend/validation/passwordCheck";
 import { usernameCheck } from "../../../../../../function/backend/validation/usernameCheck";
 import { Context } from "../../../../../../types/apollo/backend/context";
+import { Upload } from "../../../../../../types/function/file/uploadType";
+import { saveFile } from "../../../../../fs/saveFile";
 import { UserToken } from "../../../../../mongodb/schema/Token";
 import { User } from "../../../../../mongodb/schema/User";
 import { logger } from "../../../../../winston";
 import { logoutAll } from "./logoutAll"
 
+
 interface UpdateUserInfoArgs{
     refreshToken: string
     username: string,
-    password: string
+    password: string,
+    file: Upload | undefined
 }
 
 
-const updateUserInfo = async (_: null, {refreshToken,username,password}:UpdateUserInfoArgs,context: Context) => {
+const updateUserInfo = async (_: null, {refreshToken,username,password,file}:UpdateUserInfoArgs,context: Context) => {
     const { inComingIp } = context;
-
+    
     // basic info checking
     if(!refreshToken){
         throw new Error("Login please");
@@ -57,8 +61,17 @@ const updateUserInfo = async (_: null, {refreshToken,username,password}:UpdateUs
     }
 
     //save new data
+
     try{
-        
+        if(file){
+            await saveFile(file);
+        }
+    }catch{
+        throw new Error("file upload failed")
+    }
+    
+    try{
+      
         const updatedUser = await User.findByIdAndUpdate(
             {_id: userId},
             newUser,
@@ -80,6 +93,7 @@ const updateUserInfo = async (_: null, {refreshToken,username,password}:UpdateUs
         return null
         
     }
+    
 }
 
 export { updateUserInfo }

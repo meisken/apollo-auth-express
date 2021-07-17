@@ -10,8 +10,9 @@ import {
     updateUserInfo
 } from "./mutation/index"
 
-
+import { GraphQLUpload } from "apollo-server-express"
 const UserResolvers = {
+    Upload: GraphQLUpload as any,
     Query: {
         getUser,
         isLoggedIn,

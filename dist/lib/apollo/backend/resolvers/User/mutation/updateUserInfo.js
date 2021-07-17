@@ -41,16 +41,17 @@ var jsonwebtoken_1 = require("jsonwebtoken");
 var setToken_1 = require("../../../../../../function/backend/setToken");
 var passwordCheck_1 = require("../../../../../../function/backend/validation/passwordCheck");
 var usernameCheck_1 = require("../../../../../../function/backend/validation/usernameCheck");
+var saveFile_1 = require("../../../../../fs/saveFile");
 var Token_1 = require("../../../../../mongodb/schema/Token");
 var User_1 = require("../../../../../mongodb/schema/User");
 var winston_1 = require("../../../../../winston");
 var logoutAll_1 = require("./logoutAll");
 var updateUserInfo = function (_, _a, context) {
-    var refreshToken = _a.refreshToken, username = _a.username, password = _a.password;
+    var refreshToken = _a.refreshToken, username = _a.username, password = _a.password, file = _a.file;
     return __awaiter(void 0, void 0, void 0, function () {
-        var inComingIp, uid, userId, newUser, isPasswordChanged, userToken, err_1, hashedPassword, updatedUser, err_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var inComingIp, uid, userId, newUser, isPasswordChanged, userToken, err_1, hashedPassword, _b, updatedUser, err_2;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     inComingIp = context.inComingIp;
                     // basic info checking
@@ -67,21 +68,21 @@ var updateUserInfo = function (_, _a, context) {
                     if (!(username && username !== "")) return [3 /*break*/, 2];
                     return [4 /*yield*/, usernameCheck_1.usernameCheck(username)];
                 case 1:
-                    _b.sent();
-                    _b.label = 2;
+                    _c.sent();
+                    _c.label = 2;
                 case 2:
                     newUser = {};
                     isPasswordChanged = password && password !== "";
-                    _b.label = 3;
+                    _c.label = 3;
                 case 3:
-                    _b.trys.push([3, 5, , 6]);
+                    _c.trys.push([3, 5, , 6]);
                     return [4 /*yield*/, Token_1.UserToken.findOne({ uid: uid, type: setToken_1.tokenPrefix.refresh, ip: inComingIp })];
                 case 4:
-                    userToken = _b.sent();
+                    userToken = _c.sent();
                     userId = userToken.userId;
                     return [3 /*break*/, 6];
                 case 5:
-                    err_1 = _b.sent();
+                    err_1 = _c.sent();
                     winston_1.logger.error(err_1);
                     throw (new Error("invalid token"));
                 case 6:
@@ -91,14 +92,25 @@ var updateUserInfo = function (_, _a, context) {
                     if (!isPasswordChanged) return [3 /*break*/, 8];
                     return [4 /*yield*/, passwordCheck_1.passwordCheck(password, userId)];
                 case 7:
-                    hashedPassword = _b.sent();
+                    hashedPassword = _c.sent();
                     newUser.password = hashedPassword;
-                    _b.label = 8;
+                    _c.label = 8;
                 case 8:
-                    _b.trys.push([8, 10, , 11]);
-                    return [4 /*yield*/, User_1.User.findByIdAndUpdate({ _id: userId }, newUser, { new: true })];
+                    _c.trys.push([8, 11, , 12]);
+                    if (!file) return [3 /*break*/, 10];
+                    return [4 /*yield*/, saveFile_1.saveFile(file)];
                 case 9:
-                    updatedUser = _b.sent();
+                    _c.sent();
+                    _c.label = 10;
+                case 10: return [3 /*break*/, 12];
+                case 11:
+                    _b = _c.sent();
+                    throw new Error("file upload failed");
+                case 12:
+                    _c.trys.push([12, 14, , 15]);
+                    return [4 /*yield*/, User_1.User.findByIdAndUpdate({ _id: userId }, newUser, { new: true })];
+                case 13:
+                    updatedUser = _c.sent();
                     if (!updatedUser) {
                         throw new Error("User not found");
                     }
@@ -106,11 +118,11 @@ var updateUserInfo = function (_, _a, context) {
                         logoutAll_1.logoutAll(null, null, context);
                     }
                     return [2 /*return*/, updatedUser];
-                case 10:
-                    err_2 = _b.sent();
+                case 14:
+                    err_2 = _c.sent();
                     winston_1.logger.error(err_2);
                     return [2 /*return*/, null];
-                case 11: return [2 /*return*/];
+                case 15: return [2 /*return*/];
             }
         });
     });

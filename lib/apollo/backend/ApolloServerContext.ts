@@ -11,10 +11,10 @@ const context = async ({ req,res }: {req: Request, res: Response  }) => {
     const acceptReqHeader = req.headers.accept;
     const inComingIp = getIp(req);
 
-    if(acceptReqHeader !== "accept-request"){
-        logger.info(`invalid accept token from ip:${inComingIp}`);
-        throw new Error("something wrong");
-    }
+    // if(acceptReqHeader !== "accept-request"){
+    //     logger.info(`invalid accept token from ip:${inComingIp}`);
+    //     throw new Error("something wrong");
+    // }
     
     let user: UserType | undefined;
     const accessToken = req.headers.cookie ? getCookie(req.headers.cookie,"access-token") : undefined;

@@ -3,7 +3,7 @@ import { gql } from "apollo-server-express"
 
 
 const UserTypeDefs = gql`
-  
+    scalar Upload
     type User{
         id: ID,
         username: String,
@@ -33,7 +33,8 @@ const UserTypeDefs = gql`
         updateUserInfo(
             refreshToken: String
             username: String,
-            password: String
+            password: String,
+            file: Upload
         ): User,
         
         
