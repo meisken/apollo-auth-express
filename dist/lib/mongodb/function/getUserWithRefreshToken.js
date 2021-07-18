@@ -36,12 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserByRefreshToken = void 0;
+exports.getUserWithRefreshToken = void 0;
 var jsonwebtoken_1 = require("jsonwebtoken");
 var setToken_1 = require("../../../function/backend/setToken");
 var Token_1 = require("../schema/Token");
 var User_1 = require("../schema/User");
-var getUserByRefreshToken = function (_a) {
+var getUserWithRefreshToken = function (_a) {
     var token = _a.token, inComingIp = _a.inComingIp;
     var promise = new Promise(function (resolve, reject) { return __awaiter(void 0, void 0, void 0, function () {
         var decodedToken, userToken, user, err_1;
@@ -78,4 +78,4 @@ var getUserByRefreshToken = function (_a) {
     }); });
     return promise;
 };
-exports.getUserByRefreshToken = getUserByRefreshToken;
+exports.getUserWithRefreshToken = getUserWithRefreshToken;

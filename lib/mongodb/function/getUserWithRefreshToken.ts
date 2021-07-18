@@ -6,8 +6,8 @@ import { User } from "../schema/User";
 
 
 
-type GetUserByRefreshToken = ({token,inComingIp}:{token:string,inComingIp: string}) => Promise<UserType>
-const getUserByRefreshToken: GetUserByRefreshToken = ({token,inComingIp}) => {
+type GetUserWihRefreshToken = ({token,inComingIp}:{token:string,inComingIp: string}) => Promise<UserType>
+const getUserWithRefreshToken: GetUserWihRefreshToken = ({token,inComingIp}) => {
     const promise = new Promise<UserType>(async (resolve,reject) => {
         try{
             const decodedToken = verify(token,tokenPrefix.refresh + process.env.SECRET) as {uid: string};
@@ -35,4 +35,4 @@ const getUserByRefreshToken: GetUserByRefreshToken = ({token,inComingIp}) => {
 }
 
 
-export {  getUserByRefreshToken }
+export { getUserWithRefreshToken }
