@@ -10,19 +10,21 @@ type GetUserByRefreshToken = ({token,inComingIp}:{token:string,inComingIp: strin
 const getUserByRefreshToken: GetUserByRefreshToken = ({token,inComingIp}) => {
     const promise = new Promise<UserType>(async (resolve,reject) => {
         try{
-            const {uid} = verify(token,tokenPrefix.refresh + process.env.SECRET) as {uid: string};
-            const userToken = await UserToken.findOne({uid,type: tokenPrefix.refresh, ip: inComingIp}) as {userId: string};
-            if(!userToken){
-                reject(new Error ("Invalid user token"));              
-            }else{
-                const user = await User.findById(userToken.userId);
-                if(user){
-                    resolve(user);
+            const decodedToken = verify(token,tokenPrefix.refresh + process.env.SECRET) as {uid: string};
+            if(decodedToken){
+                const userToken = await UserToken.findOne({uid:decodedToken.uid,type: tokenPrefix.refresh, ip: inComingIp}) as {userId: string};
+                if(userToken){
+                    const user = await User.findById(userToken.userId);
+                    user ? resolve(user) : reject(new Error ("User not found"));
+                
                 }else{
-                    reject(new Error ("User not found"));
+                    reject(new Error ("Invalid user token"));    
+               
                 }
-           
+            }else{
+                reject(new Error ("Invalid user token"));   
             }
+
    
         
         }catch(err){

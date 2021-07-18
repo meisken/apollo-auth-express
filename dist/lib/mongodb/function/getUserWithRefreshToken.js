@@ -44,34 +44,35 @@ var User_1 = require("../schema/User");
 var getUserByRefreshToken = function (_a) {
     var token = _a.token, inComingIp = _a.inComingIp;
     var promise = new Promise(function (resolve, reject) { return __awaiter(void 0, void 0, void 0, function () {
-        var uid, userToken, user, err_1;
+        var decodedToken, userToken, user, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 5, , 6]);
-                    uid = jsonwebtoken_1.verify(token, setToken_1.tokenPrefix.refresh + process.env.SECRET).uid;
-                    return [4 /*yield*/, Token_1.UserToken.findOne({ uid: uid, type: setToken_1.tokenPrefix.refresh, ip: inComingIp })];
+                    _a.trys.push([0, 7, , 8]);
+                    decodedToken = jsonwebtoken_1.verify(token, setToken_1.tokenPrefix.refresh + process.env.SECRET);
+                    if (!decodedToken) return [3 /*break*/, 5];
+                    return [4 /*yield*/, Token_1.UserToken.findOne({ uid: decodedToken.uid, type: setToken_1.tokenPrefix.refresh, ip: inComingIp })];
                 case 1:
                     userToken = _a.sent();
-                    if (!!userToken) return [3 /*break*/, 2];
-                    reject(new Error("Invalid user token"));
-                    return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, User_1.User.findById(userToken.userId)];
-                case 3:
+                    if (!userToken) return [3 /*break*/, 3];
+                    return [4 /*yield*/, User_1.User.findById(userToken.userId)];
+                case 2:
                     user = _a.sent();
-                    if (user) {
-                        resolve(user);
-                    }
-                    else {
-                        reject(new Error("User not found"));
-                    }
+                    user ? resolve(user) : reject(new Error("User not found"));
+                    return [3 /*break*/, 4];
+                case 3:
+                    reject(new Error("Invalid user token"));
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
+                    reject(new Error("Invalid user token"));
+                    _a.label = 6;
+                case 6: return [3 /*break*/, 8];
+                case 7:
                     err_1 = _a.sent();
                     reject(err_1);
-                    return [3 /*break*/, 6];
-                case 6: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     }); });
