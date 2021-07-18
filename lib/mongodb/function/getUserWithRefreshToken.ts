@@ -18,11 +18,11 @@ const getUserWithRefreshToken: GetUserWihRefreshToken = ({token,inComingIp}) => 
                     user ? resolve(user) : reject(new Error ("User not found"));
                 
                 }else{
-                    reject(new Error ("Invalid user token"));    
+                    reject(new Error ("Invalid login token, please login again"));    
                
                 }
             }else{
-                reject(new Error ("Invalid user token"));   
+                reject(new Error ("Invalid login token or expired, please login again"));   
             }
 
    

@@ -5,10 +5,12 @@ import { usernameCheck } from "../../../../../../function/backend/validation/use
 import { Context } from "../../../../../../types/apollo/backend/context";
 import { Upload } from "../../../../../../types/file/uploadType";
 import { uploadFile } from "../../../../../fs/uploadFile";
+import { getUserWithRefreshToken } from "../../../../../mongodb/function/getUserWithRefreshToken";
 import { UserToken } from "../../../../../mongodb/schema/Token";
 import { User } from "../../../../../mongodb/schema/User";
 import { logger } from "../../../../../winston";
 import { logoutAll } from "./logoutAll"
+import { removeFiles } from './../../../../../fs/removeFiles';
 
 
 interface UpdateUserInfoArgs{
@@ -21,40 +23,35 @@ interface UpdateUserInfoArgs{
 
 const updateUserInfo = async (_: null, {refreshToken,username,password,file}:UpdateUserInfoArgs,context: Context) => {
     const { inComingIp } = context;
-    
+    let userId: string, newUser: any = {},oldPictureUrl;
     // basic info checking
     if(!refreshToken){
         throw new Error("Login please");
     }
-    const {uid} = verify(refreshToken,tokenPrefix.refresh + process.env.SECRET) as {uid: string};
- 
-    if(!uid){
-        throw new Error("Login please");
+    try{
+        const { id,pictureUrl } = await getUserWithRefreshToken({token: refreshToken,inComingIp});
+        userId = id;
+        oldPictureUrl = pictureUrl;
+        
+    }catch(err){
+        throw(err);
     }
-    if(!username && !password){
+
+    if(!username && !password && !file){
         throw new Error("There's no any new user Information");
     }
 
     if(username && username !== ""){
         await usernameCheck(username);
+        newUser.username = username
     }
 
 
     //advance info checking and push the info to newUser
-    let userId: string, newUser: any = {};
-    const isPasswordChanged = password && password !== "";
-    try{
-        const userToken = await UserToken.findOne({uid,type: tokenPrefix.refresh,ip: inComingIp});
-        userId = userToken.userId;
-        
-    }catch(err){
-        logger.error(err);
-        throw(new Error("invalid token"));
-    }
 
-    if(username && username !== ""){
-        newUser.username = username
-    }
+    const isPasswordChanged = password && password !== "";
+
+
     if(isPasswordChanged){
         const hashedPassword = await passwordCheck(password,userId);
         newUser.password = hashedPassword;
@@ -64,9 +61,14 @@ const updateUserInfo = async (_: null, {refreshToken,username,password,file}:Upd
 
     try{
         if(file){
-            const urls = await uploadFile(file,{fileType:"image",maxCount: 2,maxSize:1});
-            console.log(urls);
-            
+            const destinationFolder = "uploads/img/";
+            const filenames = await uploadFile(file,{fileType:"image",maxCount: 2,maxSize:1,destinationFolder: `public/${destinationFolder}`});
+            const newPictureUrl = `${destinationFolder + filenames[0]}`
+            newUser.pictureUrl = newPictureUrl; 
+
+            if(oldPictureUrl && newPictureUrl !== oldPictureUrl){
+                removeFiles("public/" + oldPictureUrl);
+            }
         }
     }catch(err){
         throw err

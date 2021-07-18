@@ -18,14 +18,14 @@ const getUserWithAccessToken: GetUserWithAccessToken = ({accessToken,inComingIp}
  
         const { uid } = verify(accessToken, tokenPrefix.access + process.env.SECRET!) as { uid: string };
         if(!uid){
-            reject(new Error("invalid token"));
+            reject(new Error("invalid token, please login again"));
             return
         }
 
         try{
             const parsedToken = await UserToken.findOne({uid,type: tokenPrefix.access,ip: inComingIp});      
             if(!parsedToken){
-                reject(new Error("invalid token"));
+                reject(new Error("invalid token, please login again"));
             }else if(inComingIp === parsedToken.ip){
                 const user = await User.findById(parsedToken.userId);   
                 if(user){
@@ -33,11 +33,11 @@ const getUserWithAccessToken: GetUserWithAccessToken = ({accessToken,inComingIp}
                     resolve(user);
                     return
                 }else{
-                    reject("invalid token")
+                    reject("invalid token, please login again")
                 }
                 
             }else{
-                reject(new Error("invalid token"));
+                reject(new Error("invalid token, please login again"));
             }
 
 

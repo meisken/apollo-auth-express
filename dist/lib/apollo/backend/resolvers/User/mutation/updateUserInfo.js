@@ -37,81 +37,79 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUserInfo = void 0;
-var jsonwebtoken_1 = require("jsonwebtoken");
-var setToken_1 = require("../../../../../../function/backend/setToken");
 var passwordCheck_1 = require("../../../../../../function/backend/validation/passwordCheck");
 var usernameCheck_1 = require("../../../../../../function/backend/validation/usernameCheck");
 var uploadFile_1 = require("../../../../../fs/uploadFile");
-var Token_1 = require("../../../../../mongodb/schema/Token");
+var getUserWithRefreshToken_1 = require("../../../../../mongodb/function/getUserWithRefreshToken");
 var User_1 = require("../../../../../mongodb/schema/User");
 var winston_1 = require("../../../../../winston");
 var logoutAll_1 = require("./logoutAll");
+var removeFiles_1 = require("./../../../../../fs/removeFiles");
 var updateUserInfo = function (_, _a, context) {
     var refreshToken = _a.refreshToken, username = _a.username, password = _a.password, file = _a.file;
     return __awaiter(void 0, void 0, void 0, function () {
-        var inComingIp, uid, userId, newUser, isPasswordChanged, userToken, err_1, hashedPassword, urls, err_2, updatedUser, err_3;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var inComingIp, userId, newUser, oldPictureUrl, _b, id, pictureUrl, err_1, isPasswordChanged, hashedPassword, destinationFolder, filenames, newPictureUrl, err_2, updatedUser, err_3;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     inComingIp = context.inComingIp;
+                    newUser = {};
                     // basic info checking
                     if (!refreshToken) {
                         throw new Error("Login please");
                     }
-                    uid = jsonwebtoken_1.verify(refreshToken, setToken_1.tokenPrefix.refresh + process.env.SECRET).uid;
-                    if (!uid) {
-                        throw new Error("Login please");
-                    }
-                    if (!username && !password) {
+                    _c.label = 1;
+                case 1:
+                    _c.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, getUserWithRefreshToken_1.getUserWithRefreshToken({ token: refreshToken, inComingIp: inComingIp })];
+                case 2:
+                    _b = _c.sent(), id = _b.id, pictureUrl = _b.pictureUrl;
+                    userId = id;
+                    oldPictureUrl = pictureUrl;
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _c.sent();
+                    throw (err_1);
+                case 4:
+                    if (!username && !password && !file) {
                         throw new Error("There's no any new user Information");
                     }
-                    if (!(username && username !== "")) return [3 /*break*/, 2];
+                    if (!(username && username !== "")) return [3 /*break*/, 6];
                     return [4 /*yield*/, usernameCheck_1.usernameCheck(username)];
-                case 1:
-                    _b.sent();
-                    _b.label = 2;
-                case 2:
-                    newUser = {};
-                    isPasswordChanged = password && password !== "";
-                    _b.label = 3;
-                case 3:
-                    _b.trys.push([3, 5, , 6]);
-                    return [4 /*yield*/, Token_1.UserToken.findOne({ uid: uid, type: setToken_1.tokenPrefix.refresh, ip: inComingIp })];
-                case 4:
-                    userToken = _b.sent();
-                    userId = userToken.userId;
-                    return [3 /*break*/, 6];
                 case 5:
-                    err_1 = _b.sent();
-                    winston_1.logger.error(err_1);
-                    throw (new Error("invalid token"));
+                    _c.sent();
+                    newUser.username = username;
+                    _c.label = 6;
                 case 6:
-                    if (username && username !== "") {
-                        newUser.username = username;
-                    }
+                    isPasswordChanged = password && password !== "";
                     if (!isPasswordChanged) return [3 /*break*/, 8];
                     return [4 /*yield*/, passwordCheck_1.passwordCheck(password, userId)];
                 case 7:
-                    hashedPassword = _b.sent();
+                    hashedPassword = _c.sent();
                     newUser.password = hashedPassword;
-                    _b.label = 8;
+                    _c.label = 8;
                 case 8:
-                    _b.trys.push([8, 11, , 12]);
+                    _c.trys.push([8, 11, , 12]);
                     if (!file) return [3 /*break*/, 10];
-                    return [4 /*yield*/, uploadFile_1.uploadFile(file, { fileType: "image", maxCount: 2, maxSize: 1 })];
+                    destinationFolder = "uploads/img/";
+                    return [4 /*yield*/, uploadFile_1.uploadFile(file, { fileType: "image", maxCount: 2, maxSize: 1, destinationFolder: "public/" + destinationFolder })];
                 case 9:
-                    urls = _b.sent();
-                    console.log(urls);
-                    _b.label = 10;
+                    filenames = _c.sent();
+                    newPictureUrl = "" + (destinationFolder + filenames[0]);
+                    newUser.pictureUrl = newPictureUrl;
+                    if (oldPictureUrl && newPictureUrl !== oldPictureUrl) {
+                        removeFiles_1.removeFiles("public/" + oldPictureUrl);
+                    }
+                    _c.label = 10;
                 case 10: return [3 /*break*/, 12];
                 case 11:
-                    err_2 = _b.sent();
+                    err_2 = _c.sent();
                     throw err_2;
                 case 12:
-                    _b.trys.push([12, 14, , 15]);
+                    _c.trys.push([12, 14, , 15]);
                     return [4 /*yield*/, User_1.User.findByIdAndUpdate({ _id: userId }, newUser, { new: true })];
                 case 13:
-                    updatedUser = _b.sent();
+                    updatedUser = _c.sent();
                     if (!updatedUser) {
                         throw new Error("User not found");
                     }
@@ -120,7 +118,7 @@ var updateUserInfo = function (_, _a, context) {
                     }
                     return [2 /*return*/, updatedUser];
                 case 14:
-                    err_3 = _b.sent();
+                    err_3 = _c.sent();
                     winston_1.logger.error(err_3);
                     return [2 /*return*/, null];
                 case 15: return [2 /*return*/];

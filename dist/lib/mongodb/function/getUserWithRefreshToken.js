@@ -61,11 +61,11 @@ var getUserWithRefreshToken = function (_a) {
                     user ? resolve(user) : reject(new Error("User not found"));
                     return [3 /*break*/, 4];
                 case 3:
-                    reject(new Error("Invalid user token"));
+                    reject(new Error("Invalid login token, please login again"));
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    reject(new Error("Invalid user token"));
+                    reject(new Error("Invalid login token or expired, please login again"));
                     _a.label = 6;
                 case 6: return [3 /*break*/, 8];
                 case 7:

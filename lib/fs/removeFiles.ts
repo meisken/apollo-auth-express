@@ -1,4 +1,5 @@
 import fs from "fs"
+import { logger } from "../winston";
 export const removeFiles = ( paths: (string[] | string) ) => {
     if(!(Array.isArray(paths))){
         paths = [paths];
@@ -8,8 +9,9 @@ export const removeFiles = ( paths: (string[] | string) ) => {
 
         if (fs.existsSync(path)){
             fs.unlinkSync(path);
+            logger.info(`${path} has been removed`); 
         }else{
-            console.log("file doesn't exist"); 
+            logger.info("file doesn't exist"); 
         }
     });
 }

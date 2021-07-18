@@ -50,7 +50,7 @@ var getUserWithAccessToken = function (_a) {
                 case 0:
                     uid = jsonwebtoken_1.verify(accessToken, setToken_1.tokenPrefix.access + process.env.SECRET).uid;
                     if (!uid) {
-                        reject(new Error("invalid token"));
+                        reject(new Error("invalid token, please login again"));
                         return [2 /*return*/];
                     }
                     _a.label = 1;
@@ -60,7 +60,7 @@ var getUserWithAccessToken = function (_a) {
                 case 2:
                     parsedToken = _a.sent();
                     if (!!parsedToken) return [3 /*break*/, 3];
-                    reject(new Error("invalid token"));
+                    reject(new Error("invalid token, please login again"));
                     return [3 /*break*/, 6];
                 case 3:
                     if (!(inComingIp === parsedToken.ip)) return [3 /*break*/, 5];
@@ -73,11 +73,11 @@ var getUserWithAccessToken = function (_a) {
                         return [2 /*return*/];
                     }
                     else {
-                        reject("invalid token");
+                        reject("invalid token, please login again");
                     }
                     return [3 /*break*/, 6];
                 case 5:
-                    reject(new Error("invalid token"));
+                    reject(new Error("invalid token, please login again"));
                     _a.label = 6;
                 case 6: return [3 /*break*/, 8];
                 case 7:

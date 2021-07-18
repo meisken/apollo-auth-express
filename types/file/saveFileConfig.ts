@@ -4,7 +4,8 @@ type FileMimetype = "image" | "audio" | "text" | "video" | "model" | "font" | "a
 interface SaveFileConfig{
     fileType?: FileMimetype,
     maxCount?: number,
-    maxSize?: number
+    maxSize?: number,
+    destinationFolder?: string
 }
 
 
