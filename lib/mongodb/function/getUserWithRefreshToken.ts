@@ -16,10 +16,10 @@ const getUserByRefreshToken: GetUserByRefreshToken = ({token,inComingIp}) => {
                 reject(new Error ("Invalid user token"));              
             }else{
                 const user = await User.findById(userToken.userId);
-                if(!user){
-                    reject(new Error ("User not found"));
-                }else if(user){
+                if(user){
                     resolve(user);
+                }else{
+                    reject(new Error ("User not found"));
                 }
            
             }

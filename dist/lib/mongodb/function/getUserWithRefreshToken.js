@@ -59,11 +59,11 @@ var getUserByRefreshToken = function (_a) {
                 case 2: return [4 /*yield*/, User_1.User.findById(userToken.userId)];
                 case 3:
                     user = _a.sent();
-                    if (!user) {
-                        reject(new Error("User not found"));
-                    }
-                    else if (user) {
+                    if (user) {
                         resolve(user);
+                    }
+                    else {
+                        reject(new Error("User not found"));
                     }
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
