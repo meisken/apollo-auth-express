@@ -8,10 +8,12 @@ var usernameCheck = function (username) {
         if (hasWhiteSpace_1.hasWhiteSpace(username)) {
             reject(new Error("Username cannot be left blank"));
         }
-        if (hasSymbol_1.hasSymbol(username)) {
+        else if (hasSymbol_1.hasSymbol(username)) {
             reject(new Error("Username cannot contain symbol"));
         }
-        resolve();
+        else {
+            resolve();
+        }
     });
     return promise;
 };

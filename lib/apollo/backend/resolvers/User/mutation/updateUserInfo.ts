@@ -3,8 +3,8 @@ import { tokenPrefix } from "../../../../../../function/backend/setToken";
 import { passwordCheck } from "../../../../../../function/backend/validation/passwordCheck";
 import { usernameCheck } from "../../../../../../function/backend/validation/usernameCheck";
 import { Context } from "../../../../../../types/apollo/backend/context";
-import { Upload } from "../../../../../../types/function/file/uploadType";
-import { saveFile } from "../../../../../fs/saveFile";
+import { Upload } from "../../../../../../types/file/uploadType";
+import { uploadFile } from "../../../../../fs/uploadFile";
 import { UserToken } from "../../../../../mongodb/schema/Token";
 import { User } from "../../../../../mongodb/schema/User";
 import { logger } from "../../../../../winston";
@@ -64,10 +64,12 @@ const updateUserInfo = async (_: null, {refreshToken,username,password,file}:Upd
 
     try{
         if(file){
-            await saveFile(file);
+            const urls = await uploadFile(file,{fileType:"image",maxCount: 2,maxSize:1});
+            console.log(urls);
+            
         }
-    }catch{
-        throw new Error("file upload failed")
+    }catch(err){
+        throw err
     }
     
     try{

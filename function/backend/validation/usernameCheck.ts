@@ -7,11 +7,12 @@ const usernameCheck: UsernameCheck = (username) => {
     const promise = new Promise<void>((resolve,reject) => {
         if(hasWhiteSpace(username)){
             reject(new Error("Username cannot be left blank"));
-        }
-        if(hasSymbol(username)){
+        }else if(hasSymbol(username)){
             reject(new Error("Username cannot contain symbol"));
+        }else{
+            resolve();
         }
-        resolve();
+    
     })
     return promise
 }
