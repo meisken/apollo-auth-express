@@ -1,12 +1,9 @@
-import { verify } from "jsonwebtoken";
-import { tokenPrefix } from "../../../../../../function/backend/setToken";
 import { passwordCheck } from "../../../../../../function/backend/validation/passwordCheck";
 import { usernameCheck } from "../../../../../../function/backend/validation/usernameCheck";
 import { Context } from "../../../../../../types/apollo/backend/context";
-import { Upload } from "../../../../../../types/file/uploadType";
+import { File } from "../../../../../../types/file/uploadType";
 import { uploadFile } from "../../../../../fs/uploadFile";
 import { getUserWithRefreshToken } from "../../../../../mongodb/function/getUserWithRefreshToken";
-import { UserToken } from "../../../../../mongodb/schema/Token";
 import { User } from "../../../../../mongodb/schema/User";
 import { logger } from "../../../../../winston";
 import { logoutAll } from "./logoutAll"
@@ -17,7 +14,7 @@ interface UpdateUserInfoArgs{
     refreshToken: string
     username: string,
     password: string,
-    file: Upload | undefined
+    file: File
 }
 
 
@@ -62,7 +59,9 @@ const updateUserInfo = async (_: null, {refreshToken,username,password,file}:Upd
     try{
         if(file){
             const destinationFolder = "uploads/img/";
-            const filenames = await uploadFile(file,{fileType:"image",maxCount: 2,maxSize:1,destinationFolder: `public/${destinationFolder}`});
+            const filenames = await uploadFile(file,{fileType:"image",maxCount: 2,maxSize:5,destinationFolder: `public/${destinationFolder}`});
+            console.log(filenames);
+            
             const newPictureUrl = `${destinationFolder + filenames[0]}`
             newUser.pictureUrl = newPictureUrl; 
 

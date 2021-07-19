@@ -41,6 +41,7 @@ var getCookie_1 = require("../../../function/backend/cookie/getCookie");
 var setCookie_1 = require("../../../function/backend/cookie/setCookie");
 var getIp_1 = require("../../../function/backend/getIp");
 var getUserWithAccessToken_1 = require("../../mongodb/function/getUserWithAccessToken");
+var index_1 = require("../../winston/index");
 var context = function (_a) {
     var req = _a.req, res = _a.res;
     return __awaiter(void 0, void 0, void 0, function () {
@@ -50,6 +51,10 @@ var context = function (_a) {
                 case 0:
                     acceptReqHeader = req.headers.accept;
                     inComingIp = getIp_1.getIp(req);
+                    if (acceptReqHeader !== "accept-request") {
+                        index_1.logger.info("invalid accept header from ip:" + inComingIp);
+                        throw new Error("something wrong");
+                    }
                     accessToken = req.headers.cookie ? getCookie_1.getCookie(req.headers.cookie, "access-token") : undefined;
                     if (!accessToken) return [3 /*break*/, 4];
                     _b.label = 1;

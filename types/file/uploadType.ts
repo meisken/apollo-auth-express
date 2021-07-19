@@ -8,5 +8,5 @@ interface Upload {
     encoding: string,
     createReadStream: CreateReadStream
 }
-type File = Upload | undefined;
+type File = Promise<Upload> | undefined;
 export type { Upload,File,CreateReadStream }

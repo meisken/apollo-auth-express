@@ -92,9 +92,10 @@ var updateUserInfo = function (_, _a, context) {
                     _c.trys.push([8, 11, , 12]);
                     if (!file) return [3 /*break*/, 10];
                     destinationFolder = "uploads/img/";
-                    return [4 /*yield*/, uploadFile_1.uploadFile(file, { fileType: "image", maxCount: 2, maxSize: 1, destinationFolder: "public/" + destinationFolder })];
+                    return [4 /*yield*/, uploadFile_1.uploadFile(file, { fileType: "image", maxCount: 2, maxSize: 5, destinationFolder: "public/" + destinationFolder })];
                 case 9:
                     filenames = _c.sent();
+                    console.log(filenames);
                     newPictureUrl = "" + (destinationFolder + filenames[0]);
                     newUser.pictureUrl = newPictureUrl;
                     if (oldPictureUrl && newPictureUrl !== oldPictureUrl) {
