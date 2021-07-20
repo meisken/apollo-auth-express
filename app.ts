@@ -26,16 +26,15 @@ import { limiter } from "./lib/rateLimit/rateLimiter"
 app.use(limiter);
 
 
+import { corsConfig } from './lib/cors/corsConfig';
+app.use(cors(corsConfig));
 
-app.use(cors({
-    methods:["GET","POST"],
-    origin:"*"
-}));
+
 app.use(express.static("public"));
 
 
 import { apolloServer } from "./lib/apollo/backend/ApolloServer"
-apolloServer.applyMiddleware({app});
+apolloServer.applyMiddleware({app,cors:false});
 
 
 

@@ -21,13 +21,11 @@ mongoose_1.default.connection.once('open', function () {
 });
 var rateLimiter_1 = require("./lib/rateLimit/rateLimiter");
 app.use(rateLimiter_1.limiter);
-app.use(cors_1.default({
-    methods: ["GET", "POST"],
-    origin: "*"
-}));
+var corsConfig_1 = require("./lib/cors/corsConfig");
+app.use(cors_1.default(corsConfig_1.corsConfig));
 app.use(express_1.default.static("public"));
 var ApolloServer_1 = require("./lib/apollo/backend/ApolloServer");
-ApolloServer_1.apolloServer.applyMiddleware({ app: app });
+ApolloServer_1.apolloServer.applyMiddleware({ app: app, cors: false });
 app.listen({ port: port }, function () {
     console.log("server running on port:" + port);
 });
