@@ -1,4 +1,4 @@
-import { NextApiResponse } from "next"
+import { Response} from "express"
 
 interface CookieOptions {
     domain?: string;
@@ -21,7 +21,7 @@ interface Header {
 }
 
 type SetCookie = (args: (Cookie[] | Cookie)) => void;
-type SetCookieWrapper = (res: NextApiResponse ) => SetCookie ;
+type SetCookieWrapper = (res: Response ) => SetCookie ;
 
 
 
