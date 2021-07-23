@@ -35,9 +35,7 @@ const UserTypeDefs = gql`
             username: String,
             password: String,
             file: Upload
-        ): User,
-        
-        
+        ): User,     
     } 
 
 `
