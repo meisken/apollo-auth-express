@@ -14,11 +14,12 @@ interface UpdateUserInfoArgs{
     refreshToken: string
     username: string,
     password: string,
-    file: File
+    picture: File
 }
 
 
-const updateUserInfo = async (_: null, {refreshToken,username,password,file}:UpdateUserInfoArgs,context: ApolloContextType) => {
+const updateUserInfo = async (_: null, {refreshToken,username,password,picture}:UpdateUserInfoArgs,context: ApolloContextType) => {
+
     const { inComingIp } = context;
     let userId: string, newUser: any = {},oldPictureUrl;
     // basic info checking
@@ -34,7 +35,7 @@ const updateUserInfo = async (_: null, {refreshToken,username,password,file}:Upd
         throw(err);
     }
 
-    if(!username && !password && !file){
+    if(!username && !password && !picture){
         throw new Error("There's no any new user Information");
     }
 
@@ -57,9 +58,9 @@ const updateUserInfo = async (_: null, {refreshToken,username,password,file}:Upd
     //save new data
 
     try{
-        if(file){
+        if(picture){
             const destinationFolder = "uploads/img/";
-            const filenames = await uploadFile(file,{fileType:"image",maxCount: 2,maxSize:5,destinationFolder: `public/${destinationFolder}`});
+            const filenames = await uploadFile(picture,{fileType:"image",maxCount: 2,maxSize:5,destinationFolder: `public/${destinationFolder}`});
             console.log(filenames);
             
             const newPictureUrl = `${destinationFolder + filenames[0]}`

@@ -46,7 +46,7 @@ var winston_1 = require("../../../../../winston");
 var logoutAll_1 = require("./logoutAll");
 var removeFiles_1 = require("./../../../../../fs/removeFiles");
 var updateUserInfo = function (_, _a, context) {
-    var refreshToken = _a.refreshToken, username = _a.username, password = _a.password, file = _a.file;
+    var refreshToken = _a.refreshToken, username = _a.username, password = _a.password, picture = _a.picture;
     return __awaiter(void 0, void 0, void 0, function () {
         var inComingIp, userId, newUser, oldPictureUrl, _b, id, pictureUrl, err_1, isPasswordChanged, hashedPassword, destinationFolder, filenames, newPictureUrl, err_2, updatedUser, err_3;
         return __generator(this, function (_c) {
@@ -71,7 +71,7 @@ var updateUserInfo = function (_, _a, context) {
                     err_1 = _c.sent();
                     throw (err_1);
                 case 4:
-                    if (!username && !password && !file) {
+                    if (!username && !password && !picture) {
                         throw new Error("There's no any new user Information");
                     }
                     if (!(username && username !== "")) return [3 /*break*/, 6];
@@ -90,9 +90,9 @@ var updateUserInfo = function (_, _a, context) {
                     _c.label = 8;
                 case 8:
                     _c.trys.push([8, 11, , 12]);
-                    if (!file) return [3 /*break*/, 10];
+                    if (!picture) return [3 /*break*/, 10];
                     destinationFolder = "uploads/img/";
-                    return [4 /*yield*/, uploadFile_1.uploadFile(file, { fileType: "image", maxCount: 2, maxSize: 5, destinationFolder: "public/" + destinationFolder })];
+                    return [4 /*yield*/, uploadFile_1.uploadFile(picture, { fileType: "image", maxCount: 2, maxSize: 5, destinationFolder: "public/" + destinationFolder })];
                 case 9:
                     filenames = _c.sent();
                     console.log(filenames);

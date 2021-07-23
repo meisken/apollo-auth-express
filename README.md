@@ -48,7 +48,7 @@
             refreshToken: String
             username: String,
             password: String,
-            file: Upload
+            picture: Upload
         ): User,
     } 
 </pre>
