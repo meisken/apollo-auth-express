@@ -10,32 +10,32 @@ import { apolloServer } from "./lib/apollo/backend/ApolloServer"
 const app = express();
 const port = 3005;
 
-import csrf from "csurf"
-import cookieParser from "cookie-parser"
-import { cookiesConfig } from './function/backend/cookie/cookiesConfig';
+// import csrf from "csurf"
+// import cookieParser from "cookie-parser"
+// import { cookiesConfig } from './function/backend/cookie/cookiesConfig';
 
 
-app.use(cookieParser());
-const csrfProtection = csrf({cookie:{
-    maxAge: 60 * 60 * 24,
-    ...cookiesConfig
-}});
+// app.use(cookieParser());
+// const csrfProtection = csrf({cookie:{
+//     maxAge: 60 * 60 * 24,
+//     ...cookiesConfig
+// }});
 
-app.use(csrfProtection,(req, res, next) => { 
+// app.use(csrfProtection,(req, res, next) => { 
 
-    const storedToken = req.cookies['csrf-token'];
-    const csrfToken = storedToken || req.csrfToken();
+//     const storedToken = req.cookies['csrf-token'];
+//     const csrfToken = storedToken || req.csrfToken();
 
-    if(!storedToken){
-        res.cookie("csrf-token",csrfToken ,{
-            maxAge: 60 * 60 * 24,
-            ...cookiesConfig
-        });
-    }
+//     if(!storedToken){
+//         res.cookie("csrf-token",csrfToken ,{
+//             maxAge: 60 * 60 * 24,
+//             ...cookiesConfig
+//         });
+//     }
 
-    res.locals.csrfToken = csrfToken;
-    next();
-});
+//     res.locals.csrfToken = csrfToken;
+//     next();
+// });
 
 
 
