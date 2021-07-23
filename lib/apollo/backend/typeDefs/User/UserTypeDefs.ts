@@ -20,14 +20,14 @@ const UserTypeDefs = gql`
     extend type Query {
         getUser(id: ID!): User,
         isLoggedIn(accessToken: String,ip: String): User,
-        isValidForgotPasswordToken(forgotPasswordToken: String): Boolean,
+        isValidForgotPasswordToken(forgotPasswordToken: String!): Boolean,
     }
     extend type Mutation {
-        register(username: String, email: String, password: String): Boolean,
-        login(email: String, password: String): AuthPayload,
-        confirmUser(token: String): Boolean,
-        forgotPassword(email: String): Boolean,
-        resetPassword(token: String,newPassword: String): Boolean,
+        register(username: String!, email: String!, password: String!): Boolean,
+        login(email: String!, password: String!): AuthPayload,
+        confirmUser(token: String!): Boolean,
+        forgotPassword(email: String!): Boolean,
+        resetPassword(token: String!,newPassword: String!): Boolean,
         logout: Boolean,
         logoutAll: Boolean,
         updateUserInfo(
