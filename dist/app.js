@@ -11,18 +11,8 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var rateLimiter_1 = require("./lib/rateLimit/rateLimiter");
 var corsConfig_1 = require("./lib/cors/corsConfig");
 var ApolloServer_1 = require("./lib/apollo/backend/ApolloServer");
-var csurf_1 = __importDefault(require("csurf"));
 var app = express_1.default();
 var port = 3005;
-var cookie_parser_1 = __importDefault(require("cookie-parser"));
-app.use(cookie_parser_1.default());
-var csrfProtection = csurf_1.default();
-app.use(csrfProtection);
-app.use(function (req, res, next) {
-    res.locals.csrfToken = req.csrfToken();
-    console.log(res.locals.csrfToken);
-    next();
-});
 mongoose_1.default.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

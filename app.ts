@@ -6,19 +6,10 @@ import mongoose from "mongoose"
 import { limiter } from "./lib/rateLimit/rateLimiter"
 import { corsConfig } from './lib/cors/corsConfig';
 import { apolloServer } from "./lib/apollo/backend/ApolloServer"
-import csrf from "csurf"
+
 const app = express();
 const port = 3005;
-import cookieParser from "cookie-parser"
-app.use(cookieParser())
 
-const csrfProtection = csrf();
-app.use(csrfProtection);
-app.use((req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    console.log(res.locals.csrfToken);
-    next();
-});
 
 
 mongoose.connect( process.env.MONGODB_URL! , {       

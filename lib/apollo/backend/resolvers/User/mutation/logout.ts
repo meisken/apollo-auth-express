@@ -1,11 +1,11 @@
 import { deleteAccessTokenCookie, tokenPrefix } from "../../../../../../function/backend/setToken";
-import { Context } from "../../../../../../types/apollo/backend/context";
+import { ApolloContextType } from "../../../../../../types/apollo/backend/context";
 import { UserToken } from "../../../../../mongodb/schema/Token";
 import { logger } from "../../../../../winston";
 
 
 
-const logout = async (_: null, _args: null, { setCookie,user }: Context) => {
+const logout = async (_: null, _args: null, { setCookie,user }: ApolloContextType) => {
 
     deleteAccessTokenCookie(setCookie);
     if(user){

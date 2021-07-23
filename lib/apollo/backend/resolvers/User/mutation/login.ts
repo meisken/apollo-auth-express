@@ -1,6 +1,6 @@
 import { compare } from "bcryptjs";
 import { setAccessToken, setBlacklist, setRefreshToken, tokenPrefix } from "../../../../../../function/backend/setToken";
-import { Context } from "../../../../../../types/apollo/backend/context";
+import { ApolloContextType } from "../../../../../../types/apollo/backend/context";
 import { UserType } from "../../../../../../types/apollo/backend/schema/UserType"
 import { Blacklist } from "../../../../../mongodb/schema/Blacklist";
 import { UserToken } from "../../../../../mongodb/schema/Token";
@@ -10,7 +10,7 @@ import { logger } from "../../../../../winston";
 
 
 
-const login = async (_: null, args: {email: string, password: string},{setCookie,inComingIp: ip}: Context) => {
+const login = async (_: null, args: {email: string, password: string},{setCookie,inComingIp: ip}: ApolloContextType) => {
 
             
     const user = await User.findOne({email: args.email}) as UserType;

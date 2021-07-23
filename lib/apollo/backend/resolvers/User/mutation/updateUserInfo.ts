@@ -1,6 +1,6 @@
 import { passwordCheck } from "../../../../../../function/backend/validation/passwordCheck";
 import { usernameCheck } from "../../../../../../function/backend/validation/usernameCheck";
-import { Context } from "../../../../../../types/apollo/backend/context";
+import { ApolloContextType } from "../../../../../../types/apollo/backend/context";
 import { File } from "../../../../../../types/file/uploadType";
 import { uploadFile } from "../../../../../fs/uploadFile";
 import { getUserWithRefreshToken } from "../../../../../mongodb/function/getUserWithRefreshToken";
@@ -18,7 +18,7 @@ interface UpdateUserInfoArgs{
 }
 
 
-const updateUserInfo = async (_: null, {refreshToken,username,password,file}:UpdateUserInfoArgs,context: Context) => {
+const updateUserInfo = async (_: null, {refreshToken,username,password,file}:UpdateUserInfoArgs,context: ApolloContextType) => {
     const { inComingIp } = context;
     let userId: string, newUser: any = {},oldPictureUrl;
     // basic info checking

@@ -1,10 +1,10 @@
 import { deleteAccessTokenCookie } from "../../../../../../function/backend/setToken/deleteAccessTokenCookie";
-import { Context } from "../../../../../../types/apollo/backend/context";
+import { ApolloContextType } from "../../../../../../types/apollo/backend/context";
 import { getUserWithAccessToken } from "../../../../../mongodb/function/getUserWithAccessToken";
 import { logger } from "../../../../../winston";
 
 
-const isLoggedIn = async (_: null, {accessToken,ip}: {accessToken: string,ip: string}, { setCookie,user }:Context ) => {
+const isLoggedIn = async (_: null, {accessToken,ip}: {accessToken: string,ip: string}, { setCookie,user }:ApolloContextType ) => {
     
     
 

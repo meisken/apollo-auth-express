@@ -1,4 +1,4 @@
-import { Context } from "../../../../../../types/apollo/backend/context";
+import { ApolloContextType } from "../../../../../../types/apollo/backend/context";
 import { passwordCheck } from "../../../../../../function/backend/validation/passwordCheck";
 import { UserToken } from "../../../../../mongodb/schema/Token";
 import { User } from "../../../../../mongodb/schema/User";
@@ -6,7 +6,7 @@ import { logoutAll } from "./logoutAll"
 import { getForgotPasswordToken } from "../../../../../mongodb/function/getForgotPasswordToken";
 import { logger } from "../../../../../winston";
 
-const resetPassword = async (_: null, {token,newPassword}: {token: string, newPassword: string},context: Context) => {
+const resetPassword = async (_: null, {token,newPassword}: {token: string, newPassword: string},context: ApolloContextType) => {
     
     
         

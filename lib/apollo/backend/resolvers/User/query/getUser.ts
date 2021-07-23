@@ -1,7 +1,7 @@
-import { Context } from "../../../../../../types/apollo/backend/context";
+import { ApolloContextType } from "../../../../../../types/apollo/backend/context";
 import { User } from "../../../../../mongodb/schema/User";
 
-const getUser = (_: null, args: {id: String},{user}: Context) => {
+const getUser = (_: null, args: {id: String},{user}: ApolloContextType) => {
     if(user?.admin){
         const { id } = args;
         return User.findById(id);
