@@ -24,6 +24,7 @@ var corsConfig_1 = require("./lib/cors/corsConfig");
 var ApolloServer_1 = require("./lib/apollo/backend/ApolloServer");
 var app = express_1.default();
 var port = 3005;
+app.use(cors_1.default(corsConfig_1.corsConfig));
 var csurf_1 = __importDefault(require("csurf"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var cookiesConfig_1 = require("./function/backend/cookie/cookiesConfig");
@@ -47,7 +48,6 @@ mongoose_1.default.connection.once('open', function () {
     winston_1.logger.info('connected to database');
 });
 app.use(rateLimiter_1.limiter);
-app.use(cors_1.default(corsConfig_1.corsConfig));
 app.use(express_1.default.static("public"));
 ApolloServer_1.apolloServer.applyMiddleware({ app: app, cors: false });
 app.listen({ port: port }, function () {

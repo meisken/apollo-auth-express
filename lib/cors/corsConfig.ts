@@ -13,6 +13,7 @@ const corsConfig: cors.CorsOptions = {
         return callback(null, true);
         
     },
+    
     credentials: true
 }
 

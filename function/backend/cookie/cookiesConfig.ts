@@ -1,6 +1,6 @@
 import { CookieOptions } from "../../../types/cookieTypes"
 const cookiesConfig: CookieOptions = process.env.NODE_ENV === "production" ? {
-    domain:process.env.URL,           
+    domain:process.env.DOMAIN,           
     path: "/",
     sameSite: "strict",
     secure: true,

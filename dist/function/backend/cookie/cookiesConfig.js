@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cookiesConfig = void 0;
 var cookiesConfig = process.env.NODE_ENV === "production" ? {
-    domain: process.env.URL,
+    domain: process.env.DOMAIN,
     path: "/",
     sameSite: "strict",
     secure: true,

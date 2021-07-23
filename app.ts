@@ -9,6 +9,8 @@ import { apolloServer } from "./lib/apollo/backend/ApolloServer"
 
 const app = express();
 const port = 3005;
+app.use(cors(corsConfig));
+
 
 import csrf from "csurf"
 import cookieParser from "cookie-parser"
@@ -19,6 +21,7 @@ import { acceptHeaderProtection } from './function/backend/acceptHeaderProtectio
 app.use(acceptHeaderProtection);
 
 app.use(cookieParser());
+
 const csrfProtection = csrf({cookie:{
     maxAge: 60 * 60 * 24,
     ...cookiesConfig
@@ -55,7 +58,7 @@ mongoose.connection.once('open', () => {
 
 app.use(limiter);
 
-app.use(cors(corsConfig));
+
 
 app.use(express.static("public"));
 
