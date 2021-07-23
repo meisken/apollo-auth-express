@@ -19,22 +19,22 @@ import { acceptHeaderProtection } from './function/backend/acceptHeaderProtectio
 app.use(acceptHeaderProtection);
 
 app.use(cookieParser());
-// const csrfProtection = csrf({cookie:{
-//     maxAge: 60 * 60 * 24,
-//     ...cookiesConfig
-// }});
-// app.use(csrfProtection);
+const csrfProtection = csrf({cookie:{
+    maxAge: 60 * 60 * 24,
+    ...cookiesConfig
+}});
+app.use(csrfProtection);
 
-// app.get("/csrf-token",(req, res) => {
+app.get("/csrf-token",(req, res) => {
 
-//     const csrfToken = req.csrfToken();
-//     res.cookie("csrf-token",csrfToken ,{
-//         maxAge: 60 * 60 * 24,
-//         ...cookiesConfig
-//     });
+    const csrfToken = req.csrfToken();
+    res.cookie("csrf-token",csrfToken ,{
+        maxAge: 60 * 60 * 24,
+        ...cookiesConfig
+    });
  
-//     res.json({csrfToken});
-// });
+    res.json({csrfToken});
+});
 
 
 

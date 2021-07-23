@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -13,23 +24,19 @@ var corsConfig_1 = require("./lib/cors/corsConfig");
 var ApolloServer_1 = require("./lib/apollo/backend/ApolloServer");
 var app = express_1.default();
 var port = 3005;
+var csurf_1 = __importDefault(require("csurf"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var cookiesConfig_1 = require("./function/backend/cookie/cookiesConfig");
 var acceptHeaderProtection_1 = require("./function/backend/acceptHeaderProtection");
 app.use(acceptHeaderProtection_1.acceptHeaderProtection);
 app.use(cookie_parser_1.default());
-// const csrfProtection = csrf({cookie:{
-//     maxAge: 60 * 60 * 24,
-//     ...cookiesConfig
-// }});
-// app.use(csrfProtection);
-// app.get("/csrf-token",(req, res) => {
-//     const csrfToken = req.csrfToken();
-//     res.cookie("csrf-token",csrfToken ,{
-//         maxAge: 60 * 60 * 24,
-//         ...cookiesConfig
-//     });
-//     res.json({csrfToken});
-// });
+var csrfProtection = csurf_1.default({ cookie: __assign({ maxAge: 60 * 60 * 24 }, cookiesConfig_1.cookiesConfig) });
+app.use(csrfProtection);
+app.get("/csrf-token", function (req, res) {
+    var csrfToken = req.csrfToken();
+    res.cookie("csrf-token", csrfToken, __assign({ maxAge: 60 * 60 * 24 }, cookiesConfig_1.cookiesConfig));
+    res.json({ csrfToken: csrfToken });
+});
 mongoose_1.default.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
