@@ -5,7 +5,7 @@ const tokenPrefix: TokenPrefix = {
     refresh: "refresh-token",
     confirmation: "confirmation",
     forgotPassword: "forgot-password",
-    unlock: "unlocK"
+    unlock: "unlock"
 
 }
 

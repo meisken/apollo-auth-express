@@ -4,7 +4,7 @@ type accessTokenPrefix =  "access-token";
 type refreshTokenPrefix =  "refresh-token";
 type confirmationTokenPrefix =  "confirmation";
 type forgotPasswordTokenPrefix =  "forgot-password";
-type unlockTokenPrefix =  "unlocK";
+type unlockTokenPrefix =  "unlock";
 interface TokenPrefix{
     access: accessTokenPrefix,
     refresh: refreshTokenPrefix,
