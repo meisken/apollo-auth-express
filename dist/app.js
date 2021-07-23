@@ -13,25 +13,22 @@ var corsConfig_1 = require("./lib/cors/corsConfig");
 var ApolloServer_1 = require("./lib/apollo/backend/ApolloServer");
 var app = express_1.default();
 var port = 3005;
-// import csrf from "csurf"
-// import cookieParser from "cookie-parser"
-// import { cookiesConfig } from './function/backend/cookie/cookiesConfig';
-// app.use(cookieParser());
+var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var acceptHeaderProtection_1 = require("./function/backend/acceptHeaderProtection");
+app.use(acceptHeaderProtection_1.acceptHeaderProtection);
+app.use(cookie_parser_1.default());
 // const csrfProtection = csrf({cookie:{
 //     maxAge: 60 * 60 * 24,
 //     ...cookiesConfig
 // }});
-// app.use(csrfProtection,(req, res, next) => { 
-//     const storedToken = req.cookies['csrf-token'];
-//     const csrfToken = storedToken || req.csrfToken();
-//     if(!storedToken){
-//         res.cookie("csrf-token",csrfToken ,{
-//             maxAge: 60 * 60 * 24,
-//             ...cookiesConfig
-//         });
-//     }
-//     res.locals.csrfToken = csrfToken;
-//     next();
+// app.use(csrfProtection);
+// app.get("/csrf-token",(req, res) => {
+//     const csrfToken = req.csrfToken();
+//     res.cookie("csrf-token",csrfToken ,{
+//         maxAge: 60 * 60 * 24,
+//         ...cookiesConfig
+//     });
+//     res.json({csrfToken});
 // });
 mongoose_1.default.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,

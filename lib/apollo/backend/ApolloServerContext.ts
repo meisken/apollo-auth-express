@@ -9,13 +9,13 @@ import { logger } from '../../winston/index';
 
 type Context = ({ req,res }: {req: Request, res: Response  }) => ApolloContextType;
 const context: Context = ({ req,res }) => {
-    const acceptReqHeader = req.headers.accept;
-    const inComingIp = getIp(req);
 
-    if(acceptReqHeader !== "accept-request"){
-        logger.info(`invalid accept header from ip:${inComingIp}`);
-        throw new Error("something wrong");
-    }
+    const inComingIp = getIp(req);
+    //const acceptReqHeader = req.headers.accept;
+    // if(acceptReqHeader !== "accept-request"){
+    //     logger.info(`invalid accept header from ip:${inComingIp}`);
+    //     throw new Error("something wrong");
+    // }
     
     let user: UserType | undefined;
     const accessToken = req.headers.cookie ? getCookie(req.headers.cookie,"access-token") : undefined;
