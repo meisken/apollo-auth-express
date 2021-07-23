@@ -6,6 +6,7 @@ var tokenPrefix = {
     refresh: "refresh-token",
     confirmation: "confirmation",
     forgotPassword: "forgot-password",
-    unlock: "unlocK"
+    unlock: "unlock",
+    csrf: "csrf"
 };
 exports.tokenPrefix = tokenPrefix;

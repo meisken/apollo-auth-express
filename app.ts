@@ -1,14 +1,26 @@
 import express from 'express'
 require('dotenv').config();
-const app = express();
-const port = 3005;
 import cors from "cors"
 import { logger } from './lib/winston';
-
-
-
-
 import mongoose from "mongoose"
+import { limiter } from "./lib/rateLimit/rateLimiter"
+import { corsConfig } from './lib/cors/corsConfig';
+import { apolloServer } from "./lib/apollo/backend/ApolloServer"
+import csrf from "csurf"
+const app = express();
+const port = 3005;
+import cookieParser from "cookie-parser"
+app.use(cookieParser())
+
+const csrfProtection = csrf();
+app.use(csrfProtection);
+app.use((req, res, next) => {
+    res.locals.csrfToken = req.csrfToken();
+    console.log(res.locals.csrfToken);
+    next();
+});
+
+
 mongoose.connect( process.env.MONGODB_URL! , {       
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -22,21 +34,14 @@ mongoose.connection.once('open', () => {
 
 
 
-import { limiter } from "./lib/rateLimit/rateLimiter"
+
 app.use(limiter);
 
-
-import { corsConfig } from './lib/cors/corsConfig';
 app.use(cors(corsConfig));
-
 
 app.use(express.static("public"));
 
-
-import { apolloServer } from "./lib/apollo/backend/ApolloServer"
 apolloServer.applyMiddleware({app,cors:false});
-
-
 
 app.listen({ port }, () => {
     console.log("server running on port:" + port);

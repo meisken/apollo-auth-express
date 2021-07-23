@@ -68,15 +68,13 @@ var context = function (_a) {
                     err_1 = _b.sent();
                     user = undefined;
                     return [3 /*break*/, 4];
-                case 4:
-                    res.cookie("test", "test-value");
-                    return [2 /*return*/, {
-                            req: req,
-                            res: res,
-                            user: user,
-                            inComingIp: inComingIp,
-                            setCookie: setCookie_1.setCookie(res)
-                        }];
+                case 4: return [2 /*return*/, {
+                        req: req,
+                        res: res,
+                        user: user,
+                        inComingIp: inComingIp,
+                        setCookie: setCookie_1.setCookie(res)
+                    }];
             }
         });
     });

@@ -33,7 +33,7 @@ const context = async ({ req,res }: {req: Request, res: Response  }) => {
     
     }
 
-    res.cookie("test","test-value");
+
     return { 
         req,
         res,
