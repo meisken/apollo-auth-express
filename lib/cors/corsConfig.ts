@@ -3,7 +3,7 @@ import cors from "cors";
 const corsConfig: cors.CorsOptions = {
     methods:["GET","POST"],
     origin:(origin,callback) => {
-        let allowedOrigins = [process.env.BASE_URL]
+        let allowedOrigins = process.env.ALLOWED_ORIGINS!.split(",");
 
         if(!origin) return callback(null, true);
         if(allowedOrigins.indexOf(origin) === -1){
