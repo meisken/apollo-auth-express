@@ -43,41 +43,34 @@ var getIp_1 = require("../../../function/backend/getIp");
 var getUserWithAccessToken_1 = require("../../mongodb/function/getUserWithAccessToken");
 var context = function (_a) {
     var req = _a.req, res = _a.res;
-    var inComingIp = getIp_1.getIp(req);
-    //const acceptReqHeader = req.headers.accept;
-    // if(acceptReqHeader !== "accept-request"){
-    //     logger.info(`invalid accept header from ip:${inComingIp}`);
-    //     throw new Error("something wrong");
-    // }
-    var user;
-    var accessToken = req.headers.cookie ? getCookie_1.getCookie(req.headers.cookie, "access-token") : undefined;
-    if (accessToken) {
-        var getUser = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, getUserWithAccessToken_1.getUserWithAccessToken({ inComingIp: inComingIp, accessToken: accessToken })];
-                    case 1:
-                        user = _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_1 = _a.sent();
-                        user = undefined;
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        }); };
-        getUser();
-    }
-    return {
-        req: req,
-        res: res,
-        user: user,
-        inComingIp: inComingIp,
-        setCookie: setCookie_1.setCookie(res),
-    };
+    return __awaiter(void 0, void 0, void 0, function () {
+        var inComingIp, user, accessToken, err_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    inComingIp = getIp_1.getIp(req);
+                    accessToken = req.headers.cookie ? getCookie_1.getCookie(req.headers.cookie, "access-token") : undefined;
+                    if (!accessToken) return [3 /*break*/, 4];
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, getUserWithAccessToken_1.getUserWithAccessToken({ inComingIp: inComingIp, accessToken: accessToken })];
+                case 2:
+                    user = _b.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _b.sent();
+                    user = undefined;
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/, {
+                        req: req,
+                        res: res,
+                        user: user,
+                        inComingIp: inComingIp,
+                        setCookie: setCookie_1.setCookie(res),
+                    }];
+            }
+        });
+    });
 };
 exports.context = context;

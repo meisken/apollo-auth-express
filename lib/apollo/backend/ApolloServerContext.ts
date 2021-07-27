@@ -7,8 +7,8 @@ import { UserType } from '../../../types/apollo/backend/schema/UserType';
 import { getUserWithAccessToken } from '../../mongodb/function/getUserWithAccessToken';
 import { logger } from '../../winston/index';
 
-type Context = ({ req,res }: {req: Request, res: Response  }) => ApolloContextType;
-const context: Context = ({ req,res }) => {
+type Context = ({ req,res }: {req: Request, res: Response  }) => Promise<ApolloContextType>;
+const context: Context = async ({ req,res }) => {
 
     const inComingIp = getIp(req);
     //const acceptReqHeader = req.headers.accept;
@@ -24,15 +24,12 @@ const context: Context = ({ req,res }) => {
     
 
     if(accessToken){
-        const getUser = async () => {
-            try{
-                user = await getUserWithAccessToken({inComingIp,accessToken});
-            }catch(err){
-                user = undefined;
-                
-            }
+        try{
+            user = await getUserWithAccessToken({inComingIp,accessToken});
+        }catch(err){
+            user = undefined;
+            
         }
-        getUser()
     }
 
 
