@@ -6,7 +6,11 @@ import { context } from "./ApolloServerContext"
 const apolloServer = new ApolloServer({ 
     schema,
     validationRules: [depthLimit(5)],
-    context
+    context,
+    uploads:{
+        maxFiles: 1,
+        maxFileSize: 5000000,
+    }
 });
 
 
